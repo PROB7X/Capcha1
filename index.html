@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HELM77ZX Simple Captcha Widget</title>
+    
+    <!-- Подключаем шрифт Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+    
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --success-color: #16a34a;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%);
+            margin: 0;
+        }
+
+        /* ВИДЖЕТ КАПЧИ */
+        .captcha-widget {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 320px;
+            height: 76px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 0 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            box-sizing: border-box;
+        }
+
+        .captcha-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .checkbox-wrapper {
+            position: relative;
+            width: 26px;
+            height: 26px;
+        }
+
+        .captcha-checkbox {
+            width: 100%;
+            height: 100%;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+        }
+
+        .captcha-checkbox:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+        }
+
+        .captcha-checkbox i {
+            color: white;
+            font-size: 14px;
+            transform: scale(0);
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .captcha-loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 26px;
+            height: 26px;
+            border: 3px solid #e2e8f0;
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+            box-sizing: border-box;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Состояния */
+        .checkbox-wrapper.loading .captcha-checkbox {
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+        }
+        .checkbox-wrapper.loading .captcha-loader {
+            opacity: 1;
+            animation: spin 0.8s linear infinite;
+        }
+        .checkbox-wrapper.checked .captcha-checkbox {
+            background: var(--success-color);
+            border-color: var(--success-color);
+            pointer-events: none;
+        }
+        .checkbox-wrapper.checked .captcha-checkbox i {
+            transform: scale(1);
+        }
+
+        .captcha-text {
+            font-size: 15px;
+            color: #334155;
+            font-weight: 500;
+            user-select: none;
+            cursor: pointer;
+        }
+
+        .captcha-right {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .captcha-icon {
+            font-size: 24px;
+            color: var(--primary-color);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        .captcha-brand {
+            font-size: 10px;
+            font-weight: 700;
+            color: #64748b;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ВИДЖЕТ -->
+    <div class="captcha-widget">
+        <div class="captcha-left" id="widget-click-zone">
+            <div class="checkbox-wrapper" id="loader-wrapper">
+                <div class="captcha-checkbox">
+                    <i class="fas fa-check"></i>
+                </div>
+                <div class="captcha-loader"></div>
+            </div>
+            <span class="captcha-text">Я не робот</span>
+        </div>
+        
+        <div class="captcha-right">
+            <i class="fas fa-shield-halved captcha-icon"></i>
+            <span class="captcha-brand">HELM77ZX</span>
+        </div>
+    </div>
+
+    <script>
+        const widgetClickZone = document.getElementById('widget-click-zone');
+        const loaderWrapper = document.getElementById('loader-wrapper');
+        let isChecked = false;
+
+        widgetClickZone.addEventListener('click', () => {
+            if (isChecked) return;
+            
+            // Включаем крутящийся лоадер
+            loaderWrapper.classList.add('loading');
+            
+            // Через 1.2 секунды «успешно подтверждаем»
+            setTimeout(() => {
+                loaderWrapper.classList.remove('loading');
+                loaderWrapper.classList.add('checked');
+                isChecked = true;
+            }, 1200);
+        });
+    </script>
+</body>
+</html>
